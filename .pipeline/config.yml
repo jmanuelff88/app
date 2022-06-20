@@ -40,7 +40,7 @@ steps:
     mtaDeployParameters: "-f --version-rule ALL"
 
   tmsUpload:
-    nodeName: "BTP_DEV"
+    nodeName: "tmsqas"
     credentialsId: "tms-sk"
     #Comit para darle seguimiento
     #prueba
