@@ -12,6 +12,7 @@ using {CV_SALES, CV_SESSION_INFO} from '../db/data-model';
 
 
 
+
 using { NearEarthObjectWebService } from './external/NearEarthObjectWebService.csn';
 
 service CatalogService @(path : '/catalog')
@@ -28,9 +29,10 @@ service CatalogService @(path : '/catalog')
       as select * from db.Sales
       actions {
         @(restrict: [{ to: 'Admin' }])
-        action boost();
+        action boost() returns Sales;
       }
     ;
+
 
     @readonly
     entity VSales
@@ -59,6 +61,7 @@ service CatalogService @(path : '/catalog')
 
 
 
+
     @readonly
     entity Asteroids
       @(restrict: [{ to: 'Viewer' }])
@@ -67,4 +70,6 @@ service CatalogService @(path : '/catalog')
     type userScopes { identified: Boolean; authenticated: Boolean; Viewer: Boolean; Admin: Boolean; };
     type userType { user: String; locale: String; scopes: userScopes; };
     function userInfo() returns userType;
+
+
 };

@@ -27,7 +27,7 @@ module.exports = cds.service.impl(async function () {
         }
     });
 
-    this.on('boost', async req => {
+    this.on('boost', Sales, async req => {
         try {
             const ID = req.params[0];
             const tx = cds.tx(req);
@@ -36,10 +36,11 @@ module.exports = cds.service.impl(async function () {
                 .where({ ID: { '=': ID } })
                 ;
             debug('Boosted ID:', ID);
-            return {};
+            const cs = await cds.connect.to('CatalogService');
+            let results = await cs.read(SELECT.from(Sales, ID));
+            return results;
         } catch (err) {
-            console.error(err);
-            return {};
+            req.reject(err);
         }
     });
 
@@ -48,12 +49,12 @@ module.exports = cds.service.impl(async function () {
         try {
             const tx = cds.tx(req);
             const results = await tx.run(`CALL "APP_DB_SP_TopSales"(?,?)`, [req.data.amount]);
-            return results;
+            return results.RESULT;
         } catch (err) {
-            console.error(err);
-            return {};
+            req.reject(err);
         }
     });
+
 
 
 
@@ -89,5 +90,6 @@ module.exports = cds.service.impl(async function () {
         results.scopes.Admin = req.user.is('Admin');
         return results;
     });
+
 
 });

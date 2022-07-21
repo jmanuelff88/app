@@ -12,6 +12,8 @@ entity Sales {
 };
 
 
+
+
 }
 
 @cds.persistence.exists
